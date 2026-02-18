@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import MursalinNav from "./MursalinNav";
 import MursalinHero from "./MursalinHero";
 import Skills from "../Skills/Skills";
-import Welcome from "./WelCome";
+import Welcome from "./Welcome";
 import About from "../About/About";
 import Project from '../Project/Project'
 import Contact from "../Contact/Contact";
