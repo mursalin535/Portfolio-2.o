@@ -47,7 +47,7 @@ const ProjectCard = memo(({ project, index, onHover, onClick }) => {
 
   return (
     <motion.div
-      className="w-[90%] sm:w-[85%] md:w-[90%] h-[70%] sm:h-[72%] md:h-[75%] flex justify-center items-center rounded-full cursor-pointer relative mx-auto"
+      className="w-full h-full flex justify-center items-center cursor-pointer relative"
       style={{ willChange: "transform" }}
       onHoverStart={() => {
         setIsHovered(true)
@@ -72,7 +72,7 @@ const ProjectCard = memo(({ project, index, onHover, onClick }) => {
       />
 
       <motion.div
-        className="w-[90%] h-[90%] rounded-full flex flex-col justify-center items-center gap-2 sm:gap-3 relative"
+        className="w-[95%] h-[95%] rounded-full flex flex-col justify-center items-center gap-1 sm:gap-2 relative"
         style={{ willChange: "transform" }}
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.15, ease: "easeOut" }}
@@ -91,11 +91,11 @@ const ProjectCard = memo(({ project, index, onHover, onClick }) => {
 
         <img
           src={project.img}
-          className="w-[85%] sm:w-[90%] h-[45%] sm:h-[50%] rounded-2xl sm:rounded-3xl md:rounded-4xl object-cover border-2 border-white"
+          className="w-[80%] sm:w-[85%] md:w-[90%] h-[45%] sm:h-[50%] md:h-[55%] rounded-2xl sm:rounded-3xl md:rounded-4xl object-cover border-2 border-white"
           alt={project.tittle}
           loading="lazy"
         />
-        <h6 className="text-sm sm:text-base md:text-lg font-medium text-white lilita text-center px-2">
+        <h6 className="text-xs sm:text-sm md:text-base lg:text-lg font-medium text-white lilita text-center px-1 sm:px-2">
           {project.tittle}
         </h6>
       </motion.div>
@@ -142,7 +142,7 @@ export default function Project() {
 
   return (
     <AnimatePresence mode="wait">
-      <div key="project-page" className="relative w-full min-h-screen lg:h-[100vh] bg-fixed overflow-hidden">
+      <div key="project-page" className="relative w-full min-h-screen lg:h-screen bg-fixed overflow-hidden">
 
         <video
           autoPlay
@@ -156,34 +156,35 @@ export default function Project() {
         </video>
 
         <motion.div
-          className="z-10 w-full h-full flex flex-col lg:flex-row justify-center items-center py-8 lg:py-0"
+          className="z-10 w-full h-full flex flex-col lg:flex-row justify-center items-center py-4 sm:py-6 md:py-8 lg:py-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
           {/* LEFT SIDE - Text Content */}
-          <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col justify-center items-center gap-5 lg:gap-10 px-4 lg:px-0 mb-8 lg:mb-0">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold lilita text-cyan-300 text-center lg:text-left">
+          <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col justify-center items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 px-4 lg:px-0 mb-4 sm:mb-6 md:mb-8 lg:mb-0">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold lilita text-cyan-300 text-center lg:text-left">
               Projects
             </h1>
 
-            <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold lilita text-white/90 max-w-lg text-center lg:text-left px-4 lg:px-0 lg:pl-[5vw]">
+            <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold lilita text-white/90 max-w-lg text-center lg:text-left px-4 lg:px-0 lg:pl-[5vw]">
               "I have made so far, Hope so its just the start of many"
             </span>
           </div>
 
           {/* RIGHT SIDE - Project Cards Grid */}
-          <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col gap-5 justify-center items-center px-4 lg:px-0">
-            <div className="w-full h-auto lg:h-[85%] grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 z-10">
+          <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col gap-3 sm:gap-4 md:gap-5 justify-center items-center px-4 lg:px-0">
+            <div className="w-full h-auto lg:h-[85%] grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 z-10">
               {Projects.map((project, index) => (
-                <ProjectCard
-                  key={project.tittle}
-                  project={project}
-                  index={index}
-                  onHover={playHoverSound}
-                  onClick={playClickSound}
-                />
+                <div key={project.tittle} className="aspect-square w-full">
+                  <ProjectCard
+                    project={project}
+                    index={index}
+                    onHover={playHoverSound}
+                    onClick={playClickSound}
+                  />
+                </div>
               ))}
             </div>
           </div>
