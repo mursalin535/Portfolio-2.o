@@ -1,285 +1,216 @@
-import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect } from "react";
-import { PixelatedCanvas } from "../ui/pixelated-canvas";
-import { TypingAnimation } from "../ui/typing-animation"
+import { useState, useRef, useEffect } from "react";
 
-export default function About() {
-  const [selected, setSelected] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
-  const name = '<Afiujjaman Mursalin/>'
+const TIMELINE = [
+  {
+    year: "2010–2022",
+    tag: "ORIGIN_PHASE",
+    title: "The OG Days",
+    body: "Free-spirited, outdoor-loving kid who balanced adventures with studies. Built the foundation—curiosity, resilience, and an eye for how things work.",
+    accent: "#00ffb4",
+  },
+  {
+    year: "2022–PRESENT",
+    tag: "UNIVERSITY_ERA",
+    title: "Engineering University",
+    body: "Got into my dream engineering university. Every day new learning, growing day by day, gaining maturity and shaping my future. The structured chaos of engineering life accelerated everything.",
+    accent: "#00d4ff",
+  },
+  {
+    year: "2023–PRESENT",
+    tag: "CODING_ERA",
+    title: "Full Stack Developer",
+    body: "Curiosity became obsession. What started as HTML on a Sunday is now full-stack applications, competitive programming, and a growing body of work. The fire keeps burning hotter.",
+    accent: "#ff6b9d",
+  },
+];
 
-  // Check if device is mobile
+function TimelineEntry({ entry, index, visible }) {
+  const [active, setActive] = useState(false);
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    if (visible) { const t = setTimeout(() => setActive(true), index * 200); return () => clearTimeout(t); }
+  }, [visible, index]);
 
   return (
-    <AnimatePresence mode="wait">
-      {selected === 1 ? (
-        <motion.div
-          key="about-main"
-          className="w-full min-h-screen bg-black flex flex-row"
-          style={{ perspective: 1000 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ x: -1000, opacity: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* LEFT - always side by side, never stacked */}
-          <motion.div
-            className="w-1/2 h-screen flex flex-col justify-center items-end relative gap-3 sm:gap-4 md:gap-8 lg:gap-12"
-            style={{
-              transformStyle: "preserve-3d",
-              backgroundImage: "url('/aboutMeBg.webp')",
-              backgroundSize: isMobile ? "cover" : "200% 100%",
-              backgroundPosition: isMobile ? "center" : "left center",
-              backgroundRepeat: "no-repeat",
-            }}
-            initial={{ rotateY: isMobile ? 0 : -180 }}
-            whileInView={{ rotateY: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 1.5 }}
-          >
-            <div className="absolute inset-0 bg-black opacity-75 z-0" />
-
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold lilita text-white z-10 border-t-2 border-t-red-300 rounded-4xl border-l-2 border-l-red-400 px-2 pr-2 text-right">
-              Abou
-            </h1>
-
-            <span
-              className="text-xs sm:text-sm md:text-lg text-purple-300 z-10 cursor-pointer lilita px-2 pr-2 text-right"
-              onClick={() => setSelected(2)}
-            >
-              Ta
-            </span>
-          </motion.div>
-
-          {/* RIGHT - always side by side, never stacked */}
-          <motion.div
-            className="w-1/2 h-screen flex flex-col justify-center items-start relative gap-3 sm:gap-4 md:gap-8 lg:gap-12"
-            style={{
-              transformStyle: "preserve-3d",
-              backgroundImage: "url('/aboutMeBg.webp')",
-              backgroundSize: isMobile ? "cover" : "200% 100%",
-              backgroundPosition: isMobile ? "center" : "right center",
-              backgroundRepeat: "no-repeat",
-            }}
-            initial={{ rotateY: isMobile ? 0 : 180 }}
-            whileInView={{ rotateY: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 1.5, delay: 0.2 }}
-          >
-            <div className="absolute inset-0 bg-black opacity-75 z-0" />
-
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold lilita text-white z-10 border-b-2 border-b-green-300 rounded-4xl border-r-2 border-r-green-400 px-2 pl-2 text-left">
-              tMe?
-            </h1>
-
-            <span
-              className="text-xs sm:text-sm md:text-lg text-purple-300 z-10 cursor-pointer lilita px-2 pl-2 text-left"
-              onClick={() => setSelected(2)}
-            >
-              p☝🏻
-            </span>
-          </motion.div>
-        </motion.div>
-      ) : (
-        <motion.div
-          key="about-second"
-          className="w-full min-h-screen bg-black flex flex-col md:flex-row"
-          initial={{ x: 1000, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 1000, opacity: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* LEFT SCROLL AREA - Takes full width on mobile, 60% on desktop */}
-          <div className="w-full md:w-[60%] h-[60vh] md:h-screen flex justify-center items-center py-2 md:py-0 px-2 sm:px-4">
-            <div className="w-full h-[98%] md:h-[95%] rounded-3xl md:rounded-4xl border-r-2 md:border-r-4 border-cyan-200 outline-r-1 md:outline-r-2 outline-white overflow-y-scroll custom-scrollbar">
-              
-              {/* SCHOOL SECTION */}
-              <div className="w-full min-h-[70vh] md:min-h-[75vh] flex flex-col gap-2 sm:gap-3 items-center justify-center py-4 sm:py-6 md:py-8 px-2 sm:px-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-bold lilita text-center px-2">
-                  2010-2022 (OG Days)
-                </h1>
-                <div className="w-[40%] sm:w-[30%] h-[2px] bg-gray-400" />
-                <span className="text-xs sm:text-sm md:text-base lg:text-lg font-medium lilita text-gray-300 text-center px-2 sm:px-4">
-                  Best 10 Years of life, OG unreplacable school days.
-                  Free minded, exploring, outdoor lover kid who loved adventures
-                  with a little bit of studies.
-                </span>
-
-                <div className="w-full flex flex-row justify-center items-center my-2">
-                  <div className="w-[2%] sm:w-[3%] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-full" />
-                  <div className="w-[70%] sm:w-[80%] h-[0.8vh] sm:h-[1vh] bg-gray-400 rounded-4xl" />
-                  <div className="w-[2%] sm:w-[3%] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-full" />
-                </div>
-
-                <div className="w-full flex flex-row justify-center items-center gap-1 sm:gap-2">
-                  {["/scl.jpeg", "/clg1.jpg", "/scl3.jpg"].map((img, i) => (
-                    <div key={i} className="w-1/3 flex flex-col justify-start items-center">
-                      <div className="w-[1px] sm:w-[2px] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-3xl" />
-                      <div className="w-[4px] sm:w-[8px] h-[4px] sm:h-[8px] bg-gray-500 rounded-full my-1" />
-                      <div className="w-[85%] sm:w-[80%] md:w-[75%] h-[15vh] sm:h-[18vh] md:h-[20vh] lg:h-[25vh]">
-                        <img
-                          src={img}
-                          className="w-full h-full rounded-xl sm:rounded-2xl md:rounded-3xl lg:rounded-4xl grayscale border-2 border-white object-cover"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* UNIVERSITY SECTION */}
-              <div className="w-full min-h-[70vh] md:min-h-[75vh] flex flex-col gap-2 sm:gap-3 items-center justify-center py-4 sm:py-6 md:py-8 px-2 sm:px-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-bold lilita text-center px-2">
-                  University Era (Dream Phase)
-                </h1>
-                <div className="w-[40%] sm:w-[30%] h-[2px] bg-gray-400" />
-                <span className="text-xs sm:text-sm md:text-base lg:text-lg font-medium lilita text-gray-300 text-center px-2 sm:px-4">
-                  After school & college, I got the chance to study in one of my
-                  dream places — an Engineering University. Living my dreams now.
-                  Totally different experience. Every day new learning, growing
-                  day by day, gaining maturity and shaping my future.
-                </span>
-
-                <div className="w-full flex flex-row justify-center items-center my-2">
-                  <div className="w-[2%] sm:w-[3%] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-full" />
-                  <div className="w-[70%] sm:w-[80%] h-[0.8vh] sm:h-[1vh] bg-gray-400 rounded-4xl" />
-                  <div className="w-[2%] sm:w-[3%] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-full" />
-                </div>
-
-                <div className="w-full flex flex-row justify-center items-center gap-1 sm:gap-2">
-                  {["/uni.jpeg", "/uni2.jpeg", "/me2.jpg"].map((img, i) => (
-                    <div key={i} className="w-1/3 flex flex-col justify-start items-center">
-                      <div className="w-[1px] sm:w-[2px] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-3xl" />
-                      <div className="w-[4px] sm:w-[8px] h-[4px] sm:h-[8px] bg-gray-500 rounded-full my-1" />
-                      <div className="w-[85%] sm:w-[80%] md:w-[75%] h-[15vh] sm:h-[18vh] md:h-[20vh] lg:h-[25vh]">
-                        <img
-                          src={img}
-                          className="w-full h-full rounded-xl sm:rounded-2xl md:rounded-3xl lg:rounded-4xl grayscale border-2 border-white object-cover"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* CURRENT SECTION */}
-              <div className="w-full min-h-[70vh] md:min-h-[75vh] flex flex-col gap-2 sm:gap-3 items-center justify-center py-4 sm:py-6 md:py-8 px-2 sm:px-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-bold lilita text-center px-2">
-                  Coding Era (Present & Beyond)
-                </h1>
-                <div className="w-[40%] sm:w-[30%] h-[2px] bg-gray-400" />
-                <span className="text-xs sm:text-sm md:text-base lg:text-lg font-medium lilita text-gray-300 text-center px-2 sm:px-4">
-                  Soon I came in touch with coding & programming. What started
-                  as curiosity slowly became interest in Web Development.
-                  Now Alhamdulillah, I am a Full Stack Developer. The fire of
-                  coding keeps getting hotter day by day. What was once just an
-                  interest is now an obsession, addiction, and vision.
-                  I hope to give my very best in this field and keep evolving.
-                </span>
-
-                <div className="w-full flex flex-row justify-center items-center my-2">
-                  <div className="w-[2%] sm:w-[3%] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-full" />
-                  <div className="w-[70%] sm:w-[80%] h-[0.8vh] sm:h-[1vh] bg-gray-400 rounded-4xl" />
-                  <div className="w-[2%] sm:w-[3%] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-full" />
-                </div>
-
-                <div className="w-full flex flex-row justify-center items-center gap-1 sm:gap-2">
-                  {["/current1.png", "/current2.jpg", "/current3.jpg"].map((img, i) => (
-                    <div key={i} className="w-1/3 flex flex-col justify-start items-center">
-                      <div className="w-[1px] sm:w-[2px] h-[3vh] sm:h-[4vh] bg-gray-400 rounded-3xl" />
-                      <div className="w-[4px] sm:w-[8px] h-[4px] sm:h-[8px] bg-gray-500 rounded-full my-1" />
-                      <div className="w-[85%] sm:w-[80%] md:w-[75%] h-[15vh] sm:h-[18vh] md:h-[20vh] lg:h-[25vh]">
-                        <img
-                          src={img}
-                          className="w-full h-full rounded-xl sm:rounded-2xl md:rounded-3xl lg:rounded-4xl grayscale border-2 border-white object-cover"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* RIGHT SIDE - Profile section */}
-          <div className="w-full md:w-[40%] h-[40vh] md:h-screen bg-black flex flex-col justify-center items-center gap-2 pb-4 md:pb-0 px-4 md:px-0">
-            
-            {/* Profile Image Container */}
-            <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 xl:w-56 xl:h-56 flex justify-center items-center">
-              <PixelatedCanvas
-                src="/ME.png"
-                width={isMobile ? 150 : 200}
-                height={isMobile ? 180 : 250}
-                cellSize={1}
-                dotScale={0.5}
-                shape="square"
-                backgroundColor="#000000"
-                dropoutStrength={0.2}
-                interactive={!isMobile}
-                distortionStrength={isMobile ? 3 : 5}
-                distortionRadius={isMobile ? 20 : 30}
-                distortionMode="swirl"
-                followSpeed={0.2}
-                jitterStrength={isMobile ? 2 : 4}
-                jitterSpeed={4}
-                sampleAverage
-                tintColor="#EFFFFF"
-                tintStrength={0.1}
-                className="rounded-xl border border-black shadow-lg w-full h-full object-contain"
-              />
-            </div>
-
-            {/* Name and Title */}
-            <div className="w-full text-center space-y-1">
-              <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl text-cyan-200/90 font-light lilita px-4">
-                <TypingAnimation>{name}</TypingAnimation>
-              </h1>
-              <span className="text-xs sm:text-sm lilita text-white/80 block">
-                Full Stack Developer, Programmer
-              </span>
-            </div>
-
-            {/* Go Back Button */}
-            <button
-              onClick={() => setSelected(1)}
-              className="text-white border-2 border-white/80 hover:text-black hover:bg-white rounded-3xl lilita mt-2 sm:mt-3 px-3 sm:px-4 py-1 text-xs sm:text-sm transition duration-300"
-            >
-              ← Go Back
-            </button>
-          </div>
-
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <>
+      <style>{`
+        .tl-entry {
+          display: grid; grid-template-columns: 140px 1px 1fr;
+          gap: 0 32px; margin-bottom: 48px;
+          opacity: 0; transform: translateY(20px);
+          transition: opacity 0.6s, transform 0.6s;
+        }
+        .tl-entry.active { opacity: 1; transform: translateY(0); }
+        .tl-year-col {
+          text-align: right; padding-top: 4px;
+          font-family: 'Courier New', monospace;
+          font-size: 11px; letter-spacing: 0.15em;
+          color: rgba(255,255,255,0.3); line-height: 1.6;
+        }
+        .tl-year { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 700; }
+        .tl-line-col { position: relative; display: flex; flex-direction: column; align-items: center; }
+        .tl-dot {
+          width: 10px; height: 10px; border-radius: 50%;
+          border: 2px solid; margin-top: 4px; flex-shrink: 0;
+          position: relative; z-index: 2;
+          box-shadow: 0 0 12px currentColor;
+        }
+        .tl-connector { flex: 1; width: 1px; background: rgba(255,255,255,0.06); margin-top: 4px; }
+        .tl-content-col { padding-bottom: 16px; }
+        .tl-tag {
+          font-family: 'Courier New', monospace; font-size: 9px;
+          letter-spacing: 0.3em; margin-bottom: 8px;
+        }
+        .tl-title {
+          font-family: 'Courier New', monospace; font-size: 22px;
+          font-weight: 700; color: #fff; margin-bottom: 12px;
+        }
+        .tl-body {
+          font-family: 'Courier New', monospace; font-size: 13px;
+          line-height: 1.8; color: rgba(255,255,255,0.45);
+          max-width: 500px;
+        }
+        @media (max-width: 600px) {
+          .tl-entry { grid-template-columns: 80px 1px 1fr; gap: 0 16px; }
+          .tl-year-col { font-size: 9px; }
+        }
+      `}</style>
+      <div className={`tl-entry${active ? " active" : ""}`}>
+        <div className="tl-year-col">
+          <div className="tl-year">{entry.year.split("–")[0]}</div>
+          <div>{entry.year.includes("–") ? "– " + entry.year.split("–")[1] : ""}</div>
+        </div>
+        <div className="tl-line-col">
+          <div className="tl-dot" style={{ borderColor: entry.accent, color: entry.accent }} />
+          <div className="tl-connector" />
+        </div>
+        <div className="tl-content-col">
+          <div className="tl-tag" style={{ color: entry.accent }}>// {entry.tag}</div>
+          <div className="tl-title">{entry.title}</div>
+          <div className="tl-body">{entry.body}</div>
+        </div>
+      </div>
+    </>
   );
 }
 
-// Add this to your global CSS or as a style tag
-const styles = `
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(78, 205, 196, 0.1);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(78, 205, 196, 0.3);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(78, 205, 196, 0.5);
-  }
-`;
+export default function About() {
+  const [visible, setVisible] = useState(false);
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.1 });
+    if (rootRef.current) obs.observe(rootRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        .about-root {
+          background: #000; padding: 100px 40px;
+          position: relative;
+        }
+        .about-root::before {
+          content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(0,255,180,0.4), transparent);
+        }
+        .about-inner { max-width: 1200px; margin: 0 auto; }
+        .about-grid {
+          display: grid; grid-template-columns: 1fr 1.6fr;
+          gap: 80px; align-items: start; margin-top: 60px;
+        }
+        .about-left {}
+        .about-id-card {
+          border: 1px solid rgba(0,255,180,0.15);
+          padding: 32px; background: rgba(0,255,180,0.02);
+          position: relative; margin-bottom: 24px;
+        }
+        .about-avatar-wrap {
+          width: 120px; height: 120px; border-radius: 50%;
+          border: 1px solid rgba(0,255,180,0.3);
+          overflow: hidden; margin-bottom: 20px;
+          box-shadow: 0 0 30px rgba(0,255,180,0.1);
+        }
+        .about-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(40%) contrast(1.1); }
+        .about-id-name {
+          font-family: 'Courier New', monospace; font-size: 18px;
+          font-weight: 700; color: #fff; margin-bottom: 6px;
+        }
+        .about-id-role {
+          font-family: 'Courier New', monospace; font-size: 11px;
+          letter-spacing: 0.15em; color: rgba(0,255,180,0.6);
+          margin-bottom: 20px;
+        }
+        .about-id-rows {}
+        .about-id-row {
+          display: flex; justify-content: space-between;
+          font-family: 'Courier New', monospace; font-size: 11px;
+          padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+          color: rgba(255,255,255,0.4);
+        }
+        .about-id-row:last-child { border-bottom: none; }
+        .about-id-row span:last-child { color: rgba(255,255,255,0.7); }
+        .about-values {
+          border: 1px solid rgba(255,255,255,0.06);
+          padding: 24px;
+        }
+        .about-values-title {
+          font-family: 'Courier New', monospace; font-size: 10px;
+          letter-spacing: 0.3em; color: rgba(0,255,180,0.4);
+          margin-bottom: 16px;
+        }
+        .value-pill {
+          display: inline-block; margin: 4px;
+          font-family: 'Courier New', monospace; font-size: 11px;
+          letter-spacing: 0.1em; padding: 5px 12px;
+          border: 1px solid rgba(255,255,255,0.1);
+          color: rgba(255,255,255,0.5);
+        }
+        @media (max-width: 768px) {
+          .about-grid { grid-template-columns: 1fr; gap: 40px; }
+          .about-root { padding: 60px 20px; }
+        }
+      `}</style>
+
+      <section className="about-root" ref={rootRef}>
+        <div className="about-inner">
+          <div className="section-label" style={{ fontFamily: "'Courier New', monospace", fontSize: 11, letterSpacing: "0.3em", color: "rgba(0,255,180,0.5)", marginBottom: 12 }}>// 03. ORIGIN_STORY</div>
+          <h2 style={{ fontFamily: "'Courier New', monospace", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, color: "#fff", lineHeight: 1 }}>
+            ABOUT<span style={{ color: "#00ffb4" }}>_</span>ME
+          </h2>
+
+          <div className="about-grid">
+            <div className="about-left">
+              <div className="about-id-card">
+                <div style={{ position: "absolute", top: -1, left: -1, width: 10, height: 10, borderTop: "2px solid rgba(0,255,180,0.6)", borderLeft: "2px solid rgba(0,255,180,0.6)" }} />
+                <div style={{ position: "absolute", bottom: -1, right: -1, width: 10, height: 10, borderBottom: "2px solid rgba(0,255,180,0.6)", borderRight: "2px solid rgba(0,255,180,0.6)" }} />
+                <div className="about-avatar-wrap">
+                  <img src="/ME.png" alt="Mursalin" />
+                </div>
+                <div className="about-id-name">Afiujjaman Mursalin</div>
+                <div className="about-id-role">FULL_STACK_DEVELOPER</div>
+                <div className="about-id-rows">
+                  {[["LOCATION", "Bangladesh"], ["STATUS", "Available"], ["LEVEL", "Developer"], ["FOCUS", "Web + CP"]].map(([k, v]) => (
+                    <div className="about-id-row" key={k}><span>{k}</span><span>{v}</span></div>
+                  ))}
+                </div>
+              </div>
+              <div className="about-values">
+                <div className="about-values-title">CORE_VALUES://</div>
+                {["Curiosity", "Precision", "Growth", "Open Source", "Clean Code", "Performance"].map(v => (
+                  <span key={v} className="value-pill">{v}</span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              {TIMELINE.map((entry, i) => (
+                <TimelineEntry key={entry.tag} entry={entry} index={i} visible={visible} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
